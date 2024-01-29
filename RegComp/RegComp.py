@@ -1,5 +1,7 @@
-# registry_comparison.py
+# RegComp.py - for recursive comparison of registry subfolders
 import winreg
+import json
+
 
 def read_registry(path):
     """
@@ -43,6 +45,21 @@ def read_registry(path):
     hkey = getattr(winreg, hive)
     return recurse_keys(hkey, subpath)
 
+
+def serialize_data(registry_data, filename):
+    """
+    Serializes the registry data into JSON & writes to a file.
+    :param registry_data: the registry data to be serialized
+    :param filename: the filename to save serialized data to
+    """
+    try: 
+        with open(filename, 'w') as file:
+            json.dump(registry_data, file, indent=4)
+        print(f"Data successfully saved to {filename}")
+    except Exception as e:
+        print(f"An error occurred while writing to file: {e}")
+
+
 if __name__ == "__main__":
     # Prompt the user for the registry path
     user_input = input("Enter the registry path to read (e.g., 'HKEY_CURRENT_USER\\Software'): ")
@@ -50,6 +67,13 @@ if __name__ == "__main__":
         # Attempt to read the registry data from the user-provided path
         registry_data = read_registry(user_input)
         print(registry_data)
+
+        # Ask the user if data should be saved to file
+        save_data = input("Do you want to save the registry data to a file?")
+        if save_data == 'yes':
+            filename = input("Enter the filename to save the data: ")
+            serialize_data(registry_data, filename)
+
     except Exception as e:
         # Handle any errors that occur (e.g., invalid path)
         print(f"An error occurred: {e}")
