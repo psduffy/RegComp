@@ -6,7 +6,8 @@ import base64
 class CustomJSONEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, bytes):
-            return base64.b64encode(obj).decode('utf-8') # Convert binary data to base64 string
+            return obj.hex() # Convert binary data to hex string
+            # return base64.b64encode(obj).decode('utf-8') # Convert binary data to base64 string
         return json.JSONEncoder.default(self, obj)
 
 
