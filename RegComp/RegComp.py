@@ -94,6 +94,24 @@ def compare_registries(data1, data2):
 
     return results
 
+def format_output(comparison_results):
+    """
+    Formats the comparison results for display.
+    :param comparison_results: The results from the compare_registries function
+    """
+    # Display unique keys
+    print("\nUnique Keys in First Dataset (Red): ")
+    for key, value in comparison_results['unique_to_data1'].items():
+        print(f"RED: {key} - {value}")
+
+    for key, value in comparison_results['unique_to_data2'].items():
+        print(f"RED: {key} - {value}")
+
+    # Display keys with different values
+    print("\nKeys with Different Values:")
+    for key, values in comparison_results['different_values'].items():
+        print(f"{key} - First Dataset: RED({values['data1']}), \nSecond Dataset: RED({values['data2']})")
+
 
 if __name__ == "__main__":
     choice = input("Choose an option:\n1. Read and save registry data\n2. Compare registry data\nEnter your choice (1 or 2): ")
@@ -124,9 +142,9 @@ if __name__ == "__main__":
             data1 = json.load(f1)
             data2 = json.load(f2)
 
-        comparison_results = comparison_registries(data1, data2)
-        # Logic to display or process the comparison results
-        pass # placeholder for result processing logic
+        comparison_results = compare_registries(data1, data2)
+
+        format_output(comparison_results)
 
     else:
         print("Invalid choice. Please enter 1 or 2.")
