@@ -94,23 +94,24 @@ def compare_registries(data1, data2):
 
     return results
 
-def format_output(comparison_results):
+def format_output(comparison_results, file1, file2):
     """
     Formats the comparison results for display.
     :param comparison_results: The results from the compare_registries function
     """
     # Display unique keys
-    print("\nUnique Keys in First Dataset (Red): ")
+    print(f"\nUnique Keys in {file1}: ")
     for key, value in comparison_results['unique_to_data1'].items():
-        print(f"RED: {key} - {value}")
+        print(f"{key} - {value}")
 
+    print(f"\nUnique Keys in {file2}: ")
     for key, value in comparison_results['unique_to_data2'].items():
-        print(f"RED: {key} - {value}")
+        print(f"{key} - {value}")
 
     # Display keys with different values
-    print("\nKeys with Different Values:")
+    print("\nSimilar Keys with Different Values:")
     for key, values in comparison_results['different_values'].items():
-        print(f"{key} - First Dataset: RED({values['data1']}), \nSecond Dataset: RED({values['data2']})")
+        print(f"{key}\n{file1}: ({values['data1']}), \n{file2}: ({values['data2']})")
 
 
 if __name__ == "__main__":
@@ -144,7 +145,7 @@ if __name__ == "__main__":
 
         comparison_results = compare_registries(data1, data2)
 
-        format_output(comparison_results)
+        format_output(comparison_results, file1, file2)
 
     else:
         print("Invalid choice. Please enter 1 or 2.")

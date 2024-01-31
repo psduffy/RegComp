@@ -1,0 +1,32 @@
+{
+    "SecurityProviders": "credssp.dll",
+    "SaslProfiles": {
+        "GSSAPI": "Kerberos"
+    },
+    "SCHANNEL": {
+        "EventLogging": 1,
+        "Ciphers": {},
+        "CipherSuites": {},
+        "Hashes": {},
+        "KeyExchangeAlgorithms": {},
+        "Protocols": {
+            "TLS 1.2": {
+                "Client": {
+                    "DisabledByDefault": 0,
+                    "Enabled": 1
+                }
+            }
+        }
+    },
+    "TestKey": {
+        "TestValue": 0
+    },
+    "TestKey2": {},
+    "WDigest": {
+        "Debuglevel": 0,
+        "Negotiate": 0,
+        "UTF8HTTP": 1,
+        "UTF8SASL": 1,
+        "DigestEncryptionAlgorithms": "3des,rc4"
+    }
+}
