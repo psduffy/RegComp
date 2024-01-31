@@ -100,7 +100,7 @@ def format_output(comparison_results, file1, file2):
     :param comparison_results: The results from the compare_registries function
     """
     # Display unique keys
-    print(f"\nUnique Keys in {file1}: ")
+    print(f"\n\nUnique Keys in {file1}: ")
     for key, value in comparison_results['unique_to_data1'].items():
         print(f"{key} - {value}")
 
@@ -114,41 +114,51 @@ def format_output(comparison_results, file1, file2):
         print(f"{key}\n{file1}: ({values['data1']}), \n{file2}: ({values['data2']})")
 
 
+def main():
+    while True:
+        choice = input("\n\nChoose an option:\n1. Read and save registry data\n2. Compare registry data\n\nEnter your choice (1 or 2): ")
+
+        if choice == '1':
+            # Prompt the user for the registry path
+            user_input = input("\nEnter the registry path to read (e.g., 'HKEY_CURRENT_USER\\Software'): ")
+            try:
+                # Attempt to read the registry data from the user-provided path
+                registry_data = read_registry(user_input)
+                print(registry_data)
+
+                # Ask the user if data should be saved to file
+                save_data = input("\nDo you want to save the registry data to a file? ")
+                if save_data == 'y':
+                    filename = input("\nEnter the filename to save the data: ")
+                    serialize_data(registry_data, filename)
+
+            except Exception as e:
+                # Handle any errors that occur (e.g., invalid path)
+                print(f"An error occurred: {e}")
+
+        elif choice == '2':
+            # Logic for comparing JSON files
+            file1 = input("\nEnter the filename of the first registry data file: ")
+            file2 = input("\nEnter the filename of the second registry data file: ")
+            with open(file1, 'r') as f1, open(file2, 'r') as f2:
+                data1 = json.load(f1)
+                data2 = json.load(f2)
+
+            comparison_results = compare_registries(data1, data2)
+
+            format_output(comparison_results, file1, file2)
+
+        else:
+            print("Invalid choice. Please enter 1 or 2.")
+
+        # Prompt to exit or return to main menu
+        repeat = input("\n\nBack to main menu? 'y' to go back; 'n' or 'q' to exit. ")
+        if repeat in ['n', 'q']:
+            break
+
+
 if __name__ == "__main__":
-    choice = input("Choose an option:\n1. Read and save registry data\n2. Compare registry data\nEnter your choice (1 or 2): ")
-
-    if choice == '1':
-    # Prompt the user for the registry path
-        user_input = input("Enter the registry path to read (e.g., 'HKEY_CURRENT_USER\\Software'): ")
-        try:
-        # Attempt to read the registry data from the user-provided path
-            registry_data = read_registry(user_input)
-            print(registry_data)
-
-            # Ask the user if data should be saved to file
-            save_data = input("Do you want to save the registry data to a file?")
-            if save_data == 'yes':
-                filename = input("Enter the filename to save the data: ")
-                serialize_data(registry_data, filename)
-
-        except Exception as e:
-            # Handle any errors that occur (e.g., invalid path)
-            print(f"An error occurred: {e}")
-
-    elif choice == '2':
-        # Logic for comparing JSON files
-        file1 = input("Enter the filename of the first registry data file: ")
-        file2 = input("Enter the filename of the second registry data file: ")
-        with open(file1, 'r') as f1, open(file2, 'r') as f2:
-            data1 = json.load(f1)
-            data2 = json.load(f2)
-
-        comparison_results = compare_registries(data1, data2)
-
-        format_output(comparison_results, file1, file2)
-
-    else:
-        print("Invalid choice. Please enter 1 or 2.")
+    main()
 
 # Example usage (Note: this should be run on Windows environment)
 # registry_data = read_registry("HKEY_CURRENT_USER\\Software")
